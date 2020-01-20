@@ -2,6 +2,3 @@ agentname: master
 message:
   test: Hello World nodejs
 pipeline: Build
-
-
-
