@@ -31,7 +31,7 @@ stages
          script 
          {
             String repoUrl1 = 'https://github.com/dhivyakiran/helloworld-nodejs.git'
-             String repoUrl2 = 'https://github.com/dhivyakiran/nodejs1.git'
+             String repoUrl2 = 'https://github.com/dhivyakiran/nodejs1'
             def filename
             def changeLogSets = currentBuild.changeSets
            for (int i = 0; i < changeLogSets.size(); i++) {
@@ -41,6 +41,8 @@ stages
               def lastId = entry.commitId
               echo "last id : ${lastId}"
             echo "${commitInfo(entry)}"
+              def geturl="${repoUrl2}/git/commits/${lastId}",
+                 echo "url: ${geturl}"
                def files = new ArrayList(entry.affectedFiles)
                for (int k = 0; k < files.size(); k++) {
                    def file = files[k]
