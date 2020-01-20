@@ -1,4 +1,4 @@
-node('repo')
+node
 {
    dir('microservice1') {
         git url: 'https://github.com/dhivyakiran/nodejs1.git'
