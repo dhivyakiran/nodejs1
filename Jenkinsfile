@@ -40,7 +40,8 @@ stages
                def entry = entries[j]
               def lastId = entry.commitId
               echo "last id : ${lastId}"
-              def geturl="${repoUrl2}/git/commits/${lastId}"
+              def geturl1="${repoUrl1}/git/commits/${lastId}"
+              def geturl2="${repoUrl2}/git/commits/${lastId}"
                  echo "url: ${geturl}"
                def files = new ArrayList(entry.affectedFiles)
               echo "${files}"
@@ -49,13 +50,13 @@ stages
                    echo "${file.path}"
                   filename=file.path
                   
-                    if((repoUrl1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                    if((geturl1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
                           echo "file get into microservice1"
                           microservice1=1
                           break
                        }
-                   if((repoUrl2 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                   if((geturl2 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
                           echo "file get into microservice2"
                           microservice2=1
