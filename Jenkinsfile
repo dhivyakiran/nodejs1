@@ -38,6 +38,9 @@ stages
            def entries = changeLogSets[i].items
            for (int j = 0; j < entries.length; j++) {
                def entry = entries[j]
+              def lastId = entry.commitId
+              echo "last id : ${lastId}"
+            echo "${commitInfo(entry)}"
                def files = new ArrayList(entry.affectedFiles)
                for (int k = 0; k < files.size(); k++) {
                    def file = files[k]
