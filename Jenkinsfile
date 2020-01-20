@@ -44,6 +44,16 @@ stages
               def geturl2="${repoUrl2}/git/commits/${lastId}"
                  echo "url1: ${geturl1}"
               echo "url2: ${geturl2}"
+              if(geturl1.message=="Not Found")
+              {
+                 echo "url1 is no committed"
+                 def microurl1
+              }
+              else
+              {
+                 echo "committed url2"
+                 def microurl2
+              }
                def files = new ArrayList(entry.affectedFiles)
               echo "${files}"
                for (int k = 0; k < files.size(); k++) {
@@ -51,13 +61,13 @@ stages
                    echo "${file.path}"
                   filename=file.path
                   
-                    if((geturl1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                    if((microurl1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
                           echo "file get into microservice1"
                           microservice1=1
                           break
                        }
-                   if((geturl2 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                   if((microurl2 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
                           echo "file get into microservice2"
                           microservice2=1
