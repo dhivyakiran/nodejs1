@@ -42,7 +42,8 @@ stages
               echo "last id : ${lastId}"
               def geturl1="${repoUrl1}/git/commits/${lastId}"
               def geturl2="${repoUrl2}/git/commits/${lastId}"
-                 echo "url: ${geturl}"
+                 echo "url1: ${geturl1}"
+              echo "url2: ${geturl2}"
                def files = new ArrayList(entry.affectedFiles)
               echo "${files}"
                for (int k = 0; k < files.size(); k++) {
