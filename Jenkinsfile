@@ -1,3 +1,7 @@
+node 
+{
+   git url: 'https://github.com/dhivyakiran/nodejs1.git'
+}
 pipeline  {   
 agent
 {
