@@ -41,7 +41,7 @@ stages
               def lastId = entry.commitId
               echo "last id : ${lastId}"
             echo "${commitInfo(entry)}"
-              def geturl="${repoUrl2}/git/commits/${lastId}",
+              def geturl="${repoUrl2}/git/commits/${lastId}"
                  echo "url: ${geturl}"
                def files = new ArrayList(entry.affectedFiles)
                for (int k = 0; k < files.size(); k++) {
