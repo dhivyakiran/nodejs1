@@ -1,12 +1,3 @@
-node
-{
-   dir('microservice1') {
-        git url: 'https://github.com/dhivyakiran/nodejs1.git'
-    }
-   dir('microservice2') {
-        git url: 'https://github.com/dhivyakiran/helloworld-nodejs.git'
-    }
-}
 pipeline  {   
 agent
 {
@@ -14,16 +5,33 @@ agent
 }
 environment
    {
-      lastfile=0
+      microservice1=0
+      microservice2=0
    }
 stages  
-{ 
+{
+   stage('Checking out first') {
+      steps {
+          dir('microservice1') {
+            git(url: 'https://github.com/dhivyakiran/nodejs1.git', branch: 'master')
+         }
+      }
+    }
+    stage('Checking out second') {
+      steps {
+          dir('microservice2') {
+            git(url: 'https://github.com/dhivyakiran/helloworld-nodejs.git', branch: 'master')
+         }
+      }
+    }
    stage('Clone sources')  
    {
       steps  
       {
          script 
          {
+            String repoUrl1 = 'https://github.com/dhivyakiran/helloworld-nodejs.git'
+             String repoUrl2 = 'https://github.com/dhivyakiran/nodejs1.git'
             def filename
             def changeLogSets = currentBuild.changeSets
            for (int i = 0; i < changeLogSets.size(); i++) {
@@ -36,10 +44,16 @@ stages
                    echo "${file.path}"
                   filename=file.path
                   
-                    if((microservice1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                    if((repoUrl1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
-                          echo "yml file get success"
-                          lastfile=1
+                          echo "file get into microservice1"
+                          microservice1=1
+                          break
+                       }
+                   if((repoUrl2 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
+                       {
+                          echo "file get into microservice2"
+                          microservice2=1
                           break
                        }
                   
@@ -47,13 +61,13 @@ stages
            }
            }
             
-            if(lastfile==1)
+           /* if(lastfile==1)
             {
                 def filevalue=filename.split(/\./)
             echo "${filevalue}"
                echo "get into pipeline"
                build job: 'microservice-pipeline',  parameters: [[$class: 'StringParameterValue', name: 'envname', value: "${filevalue[0]}"]], wait: true
-            }
+            }*/
          }
       }
    }
