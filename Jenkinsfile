@@ -1,6 +1,11 @@
 node 
 {
-   git url: 'https://github.com/dhivyakiran/nodejs1.git'
+   dir('microservice1') {
+        git url: 'https://github.com/dhivyakiran/nodejs1.git'
+    }
+   dir('microservice2') {
+        git url: 'https://github.com/dhivyakiran/helloworld-nodejs.git'
+    }
 }
 pipeline  {   
 agent
@@ -31,7 +36,7 @@ stages
                    echo "${file.path}"
                   filename=file.path
                   
-                    if((filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml"))
+                    if((microservice1 && (filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml")))
                        {
                           echo "yml file get success"
                           lastfile=1
@@ -41,8 +46,6 @@ stages
                }
            }
            }
-            
-           
             
             if(lastfile==1)
             {
