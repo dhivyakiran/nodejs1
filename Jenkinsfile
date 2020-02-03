@@ -1,50 +1,65 @@
-pipeline  {   
-agent
-{
-   label "master"
+pipeline  
+{   
+	agent
+	{
+		label "master"
+	}
+	environment
+	{
+		lastfile=0
+	}
+	stages  
+	{ 
+		stage('Triggering pipeline')  
+		{
+			steps  
+			{
+				script 
+				{
+					
+				    lastfile = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-status -r HEAD').trim()
+					if (lastfile.indexOf('qa.yml')< 0 && lastfile.indexOf('int.yml')< 0 && lastfile.indexOf('uat.yml')< 0 && lastfile.indexOf('prod.yml')< 0)
+					{
+						    echo "Triggered................."
+							build job: 'microservice-pipeline',  parameters: [[$class: 'StringParameterValue', name: 'envname', value: "dev"]], wait: true
+							
+							
+							
+					}
+					
+				}
+			}
+		}
+	}
 }
-environment
-   {
-      lastfile=0
-   }
-stages  
-{ 
-   stage('Trigger the microservice pipeline job')  
-   {
-      steps  
-      {
-         script 
-         {
-            def filename
-            def changeLogSets = currentBuild.changeSets
-            for (int i = 0; i < changeLogSets.size(); i++) 
-            {
-              def entries = changeLogSets[i].items
-              for (int j = 0; j < entries.length; j++) 
-              {
-                 def entry = entries[j]
-                 def files = new ArrayList(entry.affectedFiles)
-                 for (int k = 0; k < files.size(); k++) 
-                 {
-                    def file = files[k]
-                    echo "${file.path}"
-                    filename=file.path
-                    if((filename == "dev.yml" || filename == "int.yml" || filename == "qa.yml"))
-                    {
-                        lastfile=1
-                    }
-                  }
-               }
-             }
-             if(lastfile==1)
-             {
-                def filevalue=filename.split(/\./)
-                echo "${filevalue}"
-                echo "Triggered the portal pipeline"
-                build job: 'microservice-pipeline',  parameters: [[$class: 'StringParameterValue', name: 'envname', value: "${filevalue[0]}"]], wait: true
-             }
-           }
-        }
-     }
-  }
-}
+     
+	 
+	 
+	 
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
